@@ -38,9 +38,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const ws = new WebSocket("ws://raspberrypi.local:9001");
+let ws: WebSocket | null = null;
 
 const logs = ref<string[]>([]);
 
@@ -54,31 +54,50 @@ const log = (level: Level, message: string): void => {
   logs.value.push(level + ": " + message);
 }
 
-ws.onopen = () => {
-  log(Level.INFO, "Connected to socket");
-};
+onMounted(() => {
+  ws = new WebSocket("ws://raspberrypi.local:9001");
 
-ws.onmessage = (event: MessageEvent) => {
-  logs.value.push(event.data);
-};
+  ws.onopen = () => {
+    log(Level.INFO, "Connected to socket");
+  };
 
-ws.onclose = () => {
-  log(Level.INFO, "Socket connection closed");
-};
+  ws.onmessage = (event: MessageEvent) => {
+    logs.value.push(event.data);
+  };
 
-ws.onerror = (err) => {
-  log(Level.ERROR, "Failed to connect to socket: " + err);
-};
+  ws.onclose = () => {
+    log(Level.INFO, "Socket connection closed");
+  };
+
+  ws.onerror = (err) => {
+    log(Level.ERROR, "Failed to connect to socket: " + err);
+  };
+});
+
+onBeforeUnmount(() => {
+  if (ws) {
+    ws.close();
+    ws = null;
+  }
+});
 
 /*
  * Send open/close request
  */
 const triggerGarageDoor = () => {
+  if (!ws) {
+    return;
+  }
+  
   log(Level.INFO, "Sending garage door trigger request");
   ws.send("TRIGGER");
 }
 
 const shutdown = () => {
+  if (!ws) {
+    return;
+  }
+  
   log(Level.INFO, "Sending shutdown request");
   ws.send("SHUTDOWN");
 }
