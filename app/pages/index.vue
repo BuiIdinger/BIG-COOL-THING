@@ -14,14 +14,6 @@
       Open/Close Garage
     </button>
 
-    <button class="bg-black py-[12px] px-[30px] rounded-full text-white hover:opacity-75 duration-300">
-      Open/Close Garage and park telescope
-    </button>
-
-    <button class="bg-black py-[12px] px-[30px] rounded-full text-white hover:opacity-75 duration-300">
-      Park telescope
-    </button>
-
     <div>
       <div class="text-[30px] mb-[10px]">
         <p>Logs:</p>
