@@ -55,7 +55,7 @@ const log = (level: Level, message: string): void => {
 }
 
 onMounted(() => {
-  ws = new WebSocket("ws://raspberrypi.local:9001");
+  ws = new WebSocket("ws://control-panel.local:9001");
 
   ws.onopen = () => {
     log(Level.INFO, "Connected to socket");
