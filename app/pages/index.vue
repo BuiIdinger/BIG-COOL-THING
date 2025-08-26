@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue"
 
 let ws: WebSocket | null = null;
 
@@ -47,7 +47,7 @@ const log = (level: Level, message: string): void => {
 }
 
 onMounted(() => {
-  ws = new WebSocket("ws://control-panel.local:9001");
+  ws = new WebSocket("ws://192.168.1.17:9001");
 
   ws.onopen = () => {
     log(Level.INFO, "Connected to socket");
@@ -58,6 +58,7 @@ onMounted(() => {
   };
 
   ws.onclose = () => {
+    ws = new WebSocket("ws://192.168.1.17:9001");
     log(Level.INFO, "Socket connection closed");
   };
 
