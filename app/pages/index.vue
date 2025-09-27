@@ -47,7 +47,7 @@ const log = (level: Level, message: string): void => {
 }
 
 onMounted(() => {
-  ws = new WebSocket("ws://192.168.1.17:9001");
+  ws = new WebSocket("ws://192.168.1.20:9001");
 
   ws.onopen = () => {
     log(Level.INFO, "Connected to socket");
@@ -58,7 +58,7 @@ onMounted(() => {
   };
 
   ws.onclose = () => {
-    ws = new WebSocket("ws://192.168.1.17:9001");
+    ws = new WebSocket("ws://192.168.1.20:9001");
     log(Level.INFO, "Socket connection closed");
   };
 
